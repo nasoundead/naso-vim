@@ -30,6 +30,7 @@ IF NOT EXIST "%APP_PATH%" (
 
 call mklink "%HOME%\.vimrc" "%APP_PATH%\.vimrc"
 call mklink "%HOME%\_vimrc" "%APP_PATH%\.vimrc"
+call mklink "%HOME%\.vimrc.bundles" "%APP_PATH%\.vimrc.bundles"
 call mklink /J "%HOME%\.vim" "%APP_PATH%\.vim"
 
 IF NOT EXIST "%APP_PATH%\.vim\bundle" (
@@ -44,5 +45,5 @@ IF NOT EXIST "%HOME%/.vim/bundle/vundle" (
   call cd %HOME%
 )
 
-call vim -u "%APP_PATH%/.vimrc.bundles" +BundleInstall! +BundleClean +qall
+REM call vim -u "%APP_PATH%/.vimrc.bundles" +BundleInstall! +BundleClean +qall
 

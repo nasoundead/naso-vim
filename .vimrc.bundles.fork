@@ -70,16 +70,22 @@
         endif
     " }
 
+    " In your .vimrc.before.local file
+    " list only the plugin groups you will use
     if !exists('g:naso_bundle_groups')
         " let g:naso_bundle_groups=['general', 'writing', 'neocomplete', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]
         let g:naso_bundle_groups=['general',]
     endif
 
+    " To override all the included bundles, add the following to your
+    " .vimrc.bundles.local file:
+    "   let g:override_naso_bundles = 1
+    if !exists("g:override_naso_bundles")
+
     " General {
         if count(g:naso_bundle_groups, 'general')
             Bundle 'scrooloose/nerdtree'
             Bundle 'altercation/vim-colors-solarized'
-			Bundle 'nanotech/jellybeans.vim'
             Bundle 'tpope/vim-surround'
             Bundle 'tpope/vim-repeat'
             Bundle 'rhysd/conflict-marker.vim'
@@ -165,7 +171,15 @@
             Bundle 'Shougo/neosnippet-snippets'
             Bundle 'honza/vim-snippets'
         endif
-    " }    
+    " }
+
+    " PHP {
+        if count(g:naso_bundle_groups, 'php')
+            " Bundle 'naso/PIV'
+            Bundle 'arnaud-lb/vim-php-namespace'
+            Bundle 'beyondwords/vim-twig'
+        endif
+    " }
 
     " Python {
         if count(g:naso_bundle_groups, 'python')
@@ -175,10 +189,9 @@
             Bundle 'python_match.vim'
             Bundle 'pythoncomplete'
         endif
-    " }    
-	
-	
-	" Javascript {
+    " }
+
+    " Javascript {
         if count(g:naso_bundle_groups, 'javascript')
             Bundle 'elzr/vim-json'
             Bundle 'groenewege/vim-less'
@@ -187,8 +200,31 @@
             Bundle 'kchmck/vim-coffee-script'
         endif
     " }
-	
-	" HTML {
+
+    " Scala {
+        if count(g:naso_bundle_groups, 'scala')
+            Bundle 'derekwyatt/vim-scala'
+            Bundle 'derekwyatt/vim-sbt'
+            Bundle 'xptemplate'
+        endif
+    " }
+
+    " Haskell {
+        if count(g:naso_bundle_groups, 'haskell')
+            Bundle 'travitch/hasksyn'
+            Bundle 'dag/vim2hs'
+            Bundle 'Twinside/vim-haskellConceal'
+            Bundle 'Twinside/vim-haskellFold'
+            Bundle 'lukerandall/haskellmode-vim'
+            Bundle 'eagletmt/neco-ghc'
+            Bundle 'eagletmt/ghcmod-vim'
+            Bundle 'Shougo/vimproc.vim'
+            Bundle 'adinapoli/cumino'
+            Bundle 'bitc/vim-hdevtools'
+        endif
+    " }
+
+    " HTML {
         if count(g:naso_bundle_groups, 'html')
             Bundle 'amirh/HTML-AutoCloseTag'
             Bundle 'hail2u/vim-css3-syntax'
@@ -197,8 +233,38 @@
             Bundle 'mattn/emmet-vim'
         endif
     " }
-	
-	" Misc {
+
+    " Ruby {
+        if count(g:naso_bundle_groups, 'ruby')
+            Bundle 'tpope/vim-rails'
+            let g:rubycomplete_buffer_loading = 1
+            "let g:rubycomplete_classes_in_global = 1
+            "let g:rubycomplete_rails = 1
+        endif
+    " }
+
+    " Puppet {
+        if count(g:naso_bundle_groups, 'puppet')
+            Bundle 'rodjek/vim-puppet'
+        endif
+    " }
+
+    " Go Lang {
+        if count(g:naso_bundle_groups, 'go')
+            "Bundle 'Blackrush/vim-gocode'
+            Bundle 'fatih/vim-go'
+        endif
+    " }
+
+    " Elixir {
+        if count(g:naso_bundle_groups, 'elixir')
+            Bundle 'elixir-lang/vim-elixir'
+            Bundle 'carlosgaldino/elixir-snippets'
+            Bundle 'mattreduce/vim-mix'
+        endif
+    " }
+
+    " Misc {
         if count(g:naso_bundle_groups, 'misc')
             Bundle 'rust-lang/rust.vim'
             Bundle 'tpope/vim-markdown'
@@ -209,6 +275,8 @@
             Bundle 'saltstack/salt-vim'
         endif
     " }
+
+    endif
 
 " }
 

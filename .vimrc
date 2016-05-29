@@ -147,12 +147,15 @@
 
 " Vim UI {
 
-    if !exists('g:override_naso_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-        let g:solarized_termcolors=256
-        let g:solarized_termtrans=1
-        let g:solarized_contrast="normal"
-        let g:solarized_visibility="normal"
-        color solarized             " Load a colorscheme
+    " if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+    "     let g:solarized_termcolors=256
+    "     let g:solarized_termtrans=1
+    "     let g:solarized_contrast="normal"
+    "     let g:solarized_visibility="normal"
+    "     color solarized             " Load a colorscheme
+    " endif
+	if filereadable(expand("~/.vim/bundle/jellybeans.vim/colors/jellybeans.vim"))
+	    color jellybeans            " Load a colorscheme
     endif
 
     set tabpagemax=15               " Only show 15 tabs
@@ -177,9 +180,6 @@
         " Broken down into easily includeable segments
         set statusline=%<%f\                     " Filename
         set statusline+=%w%h%m%r                 " Options
-        if !exists('g:override_naso_bundles')
-            set statusline+=%{fugitive#statusline()} " Git Hotness
-        endif
         set statusline+=\ [%{&ff}/%Y]            " Filetype
         set statusline+=\ [%{getcwd()}]          " Current dir
         set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
@@ -473,12 +473,6 @@
         endif
     " }
 
-    " PIV {
-        if isdirectory(expand("~/.vim/bundle/PIV"))
-            let g:DisableAutoPHPFolding = 0
-            let g:PIVAutoClose = 0
-        endif
-    " }
 
     " Misc {
         if isdirectory(expand("~/.vim/bundle/nerdtree"))
@@ -662,22 +656,7 @@
         endif
     "}
 
-    " Fugitive {
-        if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
-            nnoremap <silent> <leader>gs :Gstatus<CR>
-            nnoremap <silent> <leader>gd :Gdiff<CR>
-            nnoremap <silent> <leader>gc :Gcommit<CR>
-            nnoremap <silent> <leader>gb :Gblame<CR>
-            nnoremap <silent> <leader>gl :Glog<CR>
-            nnoremap <silent> <leader>gp :Git push<CR>
-            nnoremap <silent> <leader>gr :Gread<CR>
-            nnoremap <silent> <leader>gw :Gwrite<CR>
-            nnoremap <silent> <leader>ge :Gedit<CR>
-            " Mnemonic _i_nteractive
-            nnoremap <silent> <leader>gi :Git add -p %<CR>
-            nnoremap <silent> <leader>gg :SignifyToggle<CR>
-        endif
-    "}
+   
 
     " YouCompleteMe {
         if count(g:naso_bundle_groups, 'youcompleteme')
@@ -1048,7 +1027,7 @@
             elseif OSX() && has("gui_running")
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
             elseif WINDOWS() && has("gui_running")
-                set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+                set guifont=Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
             endif
         endif
     else
