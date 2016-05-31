@@ -71,8 +71,8 @@
     " }
 
     if !exists('g:naso_bundle_groups')
-        " let g:naso_bundle_groups=['general', 'writing', 'neocomplete', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]
-        let g:naso_bundle_groups=['general', 'programming', 'python',]
+        let g:naso_bundle_groups=['general', 'writing', 'neocomplete', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]
+        " let g:naso_bundle_groups=['general', 'programming', 'python',]
     endif
 
     " General {
