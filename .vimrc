@@ -72,6 +72,9 @@
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
+	set encoding=utf-8
+	" language messages zh_CN.utf-8
+	language messages utf-8
 
     if has('clipboard')
         if has('unnamedplus')  " When possible use + register for copy-paste
@@ -427,28 +430,6 @@
 " }
 
 " Plugins {
-
-    " GoLang {
-        if count(g:naso_bundle_groups, 'go')
-            let g:go_highlight_functions = 1
-            let g:go_highlight_methods = 1
-            let g:go_highlight_structs = 1
-            let g:go_highlight_operators = 1
-            let g:go_highlight_build_constraints = 1
-            let g:go_fmt_command = "goimports"
-            let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-            let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-            au FileType go nmap <Leader>s <Plug>(go-implements)
-            au FileType go nmap <Leader>i <Plug>(go-info)
-            au FileType go nmap <Leader>e <Plug>(go-rename)
-            au FileType go nmap <leader>r <Plug>(go-run)
-            au FileType go nmap <leader>b <Plug>(go-build)
-            au FileType go nmap <leader>t <Plug>(go-test)
-            au FileType go nmap <Leader>gd <Plug>(go-doc)
-            au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-            au FileType go nmap <leader>co <Plug>(go-coverage)
-        endif
-        " }
 
 
     " TextObj Sentence {
@@ -993,7 +974,7 @@
         " Use the powerline theme and optionally enable powerline symbols.
         " To use the symbols , , , , , , and .in the statusline
         " segments add the following to your .vimrc.before.local file:
-        "   let g:airline_powerline_fonts=1
+        let g:airline_powerline_fonts=1
         " If the previous symbols do not render for you then install a
         " powerline enabled font.
 
@@ -1001,7 +982,7 @@
         " Default in terminal vim is 'dark'
         if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
             if !exists('g:airline_theme')
-                let g:airline_theme = 'solarized'
+                let g:airline_theme = 'powerlineish'
             endif
             if !exists('g:airline_powerline_fonts')
                 " Use the default set of separators with a few customizations
@@ -1027,7 +1008,7 @@
             elseif OSX() && has("gui_running")
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
             elseif WINDOWS() && has("gui_running")
-                set guifont=Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+                set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h10,PragmataPro:h10,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
             endif
         endif
     else
