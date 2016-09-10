@@ -16,25 +16,25 @@ REM    limitations under the License.
 @if not exist "%HOME%" @set HOME=%HOMEDRIVE%%HOMEPATH%
 @if not exist "%HOME%" @set HOME=%USERPROFILE%
 
-@set APP_PATH=%HOME%\naso-vim
-IF NOT EXIST "%APP_PATH%" (
-    call git clone https://github.com/nasoundead/naso-vim.git "%APP_PATH%"
+set VIMAPP_PATH=%HOME%\naso-vim
+IF NOT EXIST "%VIMAPP_PATH%" (
+    call git clone https://github.com/nasoundead/naso-vim.git "%VIMAPP_PATH%"
 ) ELSE (
     @set ORIGINAL_DIR=%CD%
     echo updating naso-vim
-    chdir /d "%APP_PATH%"
+    chdir /d "%VIMAPP_PATH%"
     call git pull
     chdir /d "%ORIGINAL_DIR%"
-    call cd "%APP_PATH%"
+    call cd "%VIMAPP_PATH%"
 )
 
-call mklink "%HOME%\.vimrc" "%APP_PATH%\.vimrc"
-call mklink "%HOME%\_vimrc" "%APP_PATH%\.vimrc"
-call mklink "%HOME%\.vimrc.bundles" "%APP_PATH%\.vimrc.bundles"
-call mklink /J "%HOME%\.vim" "%APP_PATH%\.vim"
+call mklink "%HOME%\.vimrc" "%VIMAPP_PATH%\.vimrc"
+call mklink "%HOME%\_vimrc" "%VIMAPP_PATH%\.vimrc"
+call mklink "%HOME%\.vimrc.bundles" "%VIMAPP_PATH%\.vimrc.bundles"
+call mklink /J "%HOME%\.vim" "%VIMAPP_PATH%\.vim"
 
-IF NOT EXIST "%APP_PATH%\.vim\bundle" (
-    call mkdir "%APP_PATH%\.vim\bundle"
+IF NOT EXIST "%VIMAPP_PATH%\.vim\bundle" (
+    call mkdir "%VIMAPP_PATH%\.vim\bundle"
 )
 
 IF NOT EXIST "%HOME%/.vim/bundle/vundle" (
@@ -45,5 +45,5 @@ IF NOT EXIST "%HOME%/.vim/bundle/vundle" (
   call cd %HOME%
 )
 
-REM call vim -u "%APP_PATH%/.vimrc.bundles" +BundleInstall! +BundleClean +qall
+REM call vim -u "%VIMAPP_PATH%/.vimrc.bundles" +BundleInstall! +BundleClean +qall
 
