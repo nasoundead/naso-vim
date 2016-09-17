@@ -70,7 +70,10 @@
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
 	set encoding=utf-8
-	language messages utf-8
+    set termencoding=utf-8
+    set fileencodings=utf-8,gbk
+    set langmenu=zh_CN.utf-8
+	language messages zh_CN.utf-8
 
     if has('clipboard')
         if has('unnamedplus')  " When possible use + register for copy-paste
@@ -94,15 +97,16 @@
     set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
     set virtualedit=onemore             " Allow for cursor beyond last character
     set history=1000                    " Store a ton of history (default is 20)
-    set spell                           " Spell checking on
+    set nospell                         " Spell checking off
     set hidden                          " Allow buffer switching without saving
     set iskeyword-=.                    " '.' is an end of word designator
     set iskeyword-=#                    " '#' is an end of word designator
     set iskeyword-=-                    " '-' is an end of word designator
-
+    " 不设置备份
+    set nobackup
+    set noswapfile
 
     " Setting up the directories {
-        set backup                  " Backups are nice ...
         if has('persistent_undo')
             set undofile                " So is persistent undo ...
             set undolevels=1000         " Maximum number of changes that can be undone
@@ -120,7 +124,6 @@
 
     set showmode                    " Display the current mode
     set cursorline                  " Highlight current line
-
 
 
     if has('statusline')
@@ -303,11 +306,11 @@
         set lines=40                " 40 lines of text instead of 24
         if !exists("g:naso_no_big_font")
             if LINUX() && has("gui_running")
-                set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+                set guifont=Ubuntu\ Mono\ derivative\ Powerline:h10,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
             elseif OSX() && has("gui_running")
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
             elseif WINDOWS() && has("gui_running")
-                set guifont=Inziu\ Iosevka\ SC:h10.5,DejaVu\ Sans\ Mono\ for\ Powerline:h10.5,PragmataPro:h10,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+                set guifont=Inziu\ Iosevka\ SC:h10,DejaVu\ Sans\ Mono\ for\ Powerline:h10.5,PragmataPro:h10,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
             endif
         endif
     else
