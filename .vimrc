@@ -116,12 +116,34 @@
 
 " }
 
+    " http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
+    " Restore cursor to file position in previous editing session
+    " To disable this, add the following to your .vimrc.before.local file:
+    "   let g:spf13_no_restore_cursor = 1
+    if !exists('g:spf13_no_restore_cursor')
+        function! ResCur()
+            if line("'\"") <= line("$")
+                silent! normal! g`"
+                return 1
+            endif
+        endfunction
 
-" Vim UI {
-	if filereadable(expand("~/.vim/bundle/jellybeans.vim/colors/jellybeans.vim"))
-	    color jellybeans            " Load a colorscheme
+        augroup resCur
+            autocmd!
+            autocmd BufWinEnter * call ResCur()
+        augroup END
     endif
 
+" Vim UI {
+    if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+        let g:solarized_termcolors=256
+        let g:solarized_termtrans=1
+        let g:solarized_contrast="normal"
+        let g:solarized_visibility="normal"
+        color solarized             " Load a colorscheme
+    endif
+
+    set tabpagemax=15 " Only show 15 tabs
     set showmode                    " Display the current mode
     set cursorline                  " Highlight current line
 
@@ -187,6 +209,9 @@
 
     " Yank from the cursor to the end of the line, to be consistent with C and D.
     nnoremap Y y$
+    inoremap jk <esc>
+    inoremap <C-f> <esc>2li
+    inoremap <C-b> <esc>i
 " }
 
 " Plugins {
@@ -279,12 +304,25 @@
         let g:airline_powerline_fonts=1
         " If the previous symbols do not render for you then install a
         " powerline enabled font.
-
         " See `:echo g:airline_theme_map` for some more choices
+
+        "打开tabline功能,方便查看Buffer和切换，这个功能比较不错"
+         "我还省去了minibufexpl插件，因为我习惯在1个Tab下用多个buffer"
+         let g:airline#extensions#tabline#enabled = 1
+         let g:airline#extensions#tabline#buffer_nr_show = 1
+        "设置切换Buffer快捷键"
+         nnoremap <leader>n :bn<CR>
+         nnoremap <leader>p :bp<CR>
+
+         " 关闭状态显示空白符号计数,这个对我用处不大"
+         let g:airline#extensions#whitespace#enabled = 0
+         let g:airline#extensions#whitespace#symbol = '!'
+
         " Default in terminal vim is 'dark'
         if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
             if !exists('g:airline_theme')
-                let g:airline_theme = 'powerlineish'
+                " let g:airline_theme = 'powerlineish'
+                let g:airline_theme = 'luna'
             endif
             if !exists('g:airline_powerline_fonts')
                 " Use the default set of separators with a few customizations
@@ -306,7 +344,7 @@
         set lines=40                " 40 lines of text instead of 24
         if !exists("g:naso_no_big_font")
             if LINUX() && has("gui_running")
-                set guifont=Ubuntu\ Mono\ derivative\ Powerline:h10,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+                set guifont=Inziu\ Iosevka\ SC\ 12,Fantasque\ Sans\ Mono\ 11,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
             elseif OSX() && has("gui_running")
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
             elseif WINDOWS() && has("gui_running")

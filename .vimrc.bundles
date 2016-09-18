@@ -58,7 +58,8 @@
         if count(g:naso_bundle_groups, 'general')
             Bundle 'gmarik/vundle'
             Bundle 'scrooloose/nerdtree'
-			Bundle 'nanotech/jellybeans.vim'
+            Bundle 'nanotech/jellybeans.vim'
+            Bundle 'altercation/vim-colors-solarized'
             Bundle 'ctrlpvim/ctrlp.vim'  
             Bundle 'vim-airline/vim-airline'
             Bundle 'vim-airline/vim-airline-themes'
