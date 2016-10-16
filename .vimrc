@@ -257,11 +257,11 @@
         set lines=40                " 40 lines of text instead of 24
         if !exists("g:naso_no_big_font")
             if LINUX() && has("gui_running")
-                set guifont=Fantasque\ Sans\ Mono\ 12,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+                set guifont=PragmataPro\ 11,Ubuntu\ Mono\ derivative\ Powerline\ 12,Fantasque\ Sans\ Mono\ 12,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
             elseif OSX() && has("gui_running")
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
             elseif WINDOWS() && has("gui_running")
-                set guifont=PragmataPro:h10,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+                set guifont=PragmataPro:h10,Ubuntu\ Mono\ derivative\ Powerline\ 12,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
             endif
         endif
     else

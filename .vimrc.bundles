@@ -59,6 +59,7 @@
             Bundle 'gmarik/vundle'
             Bundle 'scrooloose/nerdtree'
             Bundle 'tpope/vim-surround'
+            Bundle 'luochen1990/rainbow'
             Bundle 'ctrlpvim/ctrlp.vim'
             Bundle 'vim-airline/vim-airline'
             Bundle 'vim-airline/vim-airline-themes'
