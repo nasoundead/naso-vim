@@ -106,14 +106,14 @@
     endif
 
 " Vim UI {
-    " if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-    "     let g:solarized_termcolors=256
-    "     let g:solarized_termtrans=1
-    "     let g:solarized_contrast="normal"
-    "     let g:solarized_visibility="normal"
-    "     color solarized             " Load a colorscheme
-    " endif
-    color desert
+    if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+        let g:solarized_termcolors=256
+        let g:solarized_termtrans=1
+        let g:solarized_contrast="normal"
+        let g:solarized_visibility="normal"
+        color solarized             " Load a colorscheme
+    endif
+    " color desert
     if has('statusline')
         set laststatus=2
         " Broken down into easily includeable segments
@@ -246,6 +246,7 @@
             if !exists('g:airline_theme')
                 let g:airline_theme = 'powerlineish'
             endif
+        endif
     " }
 
 " }
@@ -261,7 +262,7 @@
             elseif OSX() && has("gui_running")
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
             elseif WINDOWS() && has("gui_running")
-                set guifont=PragmataPro:h10,Ubuntu\ Mono\ derivative\ Powerline\ 12,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+                set guifont=PragmataPro:h12,Ubuntu\ Mono\ derivative\ Powerline\ 12,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
             endif
         endif
     else
@@ -271,4 +272,5 @@
         "set term=builtin_ansi       " Make arrow and other keys work
     endif
 " }
+
 

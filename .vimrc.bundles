@@ -57,6 +57,7 @@
     " General {
         if count(g:naso_bundle_groups, 'general')
             Bundle 'gmarik/vundle'
+            Bundle 'altercation/vim-colors-solarized'
             Bundle 'scrooloose/nerdtree'
             Bundle 'tpope/vim-surround'
             Bundle 'luochen1990/rainbow'
