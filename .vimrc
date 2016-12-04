@@ -45,11 +45,11 @@
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
-	set encoding=utf-8
+    set encoding=utf-8
     set termencoding=utf-8
     set fileencodings=utf-8,gbk
     set langmenu=zh_CN.utf-8
-	language messages zh_CN.utf-8
+    language messages zh_CN.utf-8
     if has('clipboard')
         if has('unnamedplus')  " When possible use + register for copy-paste
             set clipboard=unnamed,unnamedplus
@@ -160,17 +160,19 @@
     autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
 " }
 " Key (re)Mappings {
-    let mapleader = ','
+    let mapleader = "\<Space>"
     " Yank from the cursor to the end of the line, to be consistent with C and D.
     nnoremap Y y$
     inoremap jk <esc>
     inoremap <C-f> <esc>2li
     inoremap <C-b> <esc>i
+    nnoremap <C-j> jzz
+    nnoremap <C-k> kzz
 " }
 " Plugins {
     " NerdTree {
         if isdirectory(expand("~/.vim/bundle/nerdtree"))
-            map <C-e> <plug>NERDTreeTabsToggle<CR>
+            map <F2> :NERDTreeToggle<CR>
             map <leader>e :NERDTreeFind<CR>
             nmap <leader>nt :NERDTreeFind<CR>
             let NERDTreeShowBookmarks=1
@@ -238,9 +240,12 @@
         " To use the symbols , , , , , , and .in the statusline
         " segments add the following to your .vimrc.before.local file:
         let g:airline_powerline_fonts=1
+        "我还省去了minibufexpl插件，因为我习惯在1个Tab下用多个buffer"
+        let g:airline#extensions#tabline#enabled = 1
+        let g:airline#extensions#tabline#buffer_nr_show = 1
         "设置切换Buffer快捷键"
-         nnoremap <leader>n :bn<CR>
-         nnoremap <leader>p :bp<CR>
+        nnoremap <leader>n :bn<CR>
+        nnoremap <leader>p :bp<CR>
         " Default in terminal vim is 'dark'
         if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
             if !exists('g:airline_theme')
