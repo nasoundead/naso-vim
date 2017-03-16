@@ -1,5 +1,5 @@
-set nocompatible        " Must be first line
-set background=dark     " Assume a dark background
+" set nocompatible        " Must be first line
+" set background=dark     " Assume a dark background
 
 if has('win32') || has('win64')
     set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME
@@ -9,7 +9,7 @@ if has('win32') || has('win64')
         set termencoding=utf-8
         set encoding=utf-8
         setglobal fileencoding=utf-8
-	    set fileencodings=utf-8,gbk,gb18030,gk2312
+        set fileencodings=utf-8,gbk,gb18030,gk2312
     endif
 endif
 
@@ -22,6 +22,7 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'morhetz/gruvbox'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-surround'
 Bundle 'luochen1990/rainbow'
@@ -29,6 +30,5 @@ Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
 Bundle 'powerline/fonts'
-Bundle 'uguu-org/vim-matrix-screensaver'
 
 

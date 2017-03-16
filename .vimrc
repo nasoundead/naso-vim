@@ -23,7 +23,7 @@
         " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
         " across (heterogeneous) systems easier.
         if WINDOWS()
-          set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+          set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME
         endif
     " }
     " Arrow Key Fix {
@@ -45,11 +45,10 @@
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
-    set encoding=utf-8
-    set termencoding=utf-8
     set fileencodings=utf-8,gbk
     set langmenu=zh_CN.utf-8
     language messages zh_CN.utf-8
+
     if has('clipboard')
         if has('unnamedplus')  " When possible use + register for copy-paste
             set clipboard=unnamed,unnamedplus
@@ -57,14 +56,8 @@
             set clipboard=unnamed
         endif
     endif
-    " Most prefer to automatically switch to the current file directory when
-    " a new buffer is opened; to prevent this behavior, add the following to
-    " your .vimrc.before.local file:
-    "   let g:naso_no_autochdir = 1
-    if !exists('g:naso_no_autochdir')
-        autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-        " Always switch to the current file directory
-    endif
+    " Always switch to the current file directory
+    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
     "set autowrite                       " Automatically write a file when leaving a modified buffer
     set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
     set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
@@ -75,43 +68,39 @@
     set iskeyword-=.                    " '.' is an end of word designator
     set iskeyword-=#                    " '#' is an end of word designator
     set iskeyword-=-                    " '-' is an end of word designator
-    " 不设置备份
     set nobackup
     set noswapfile
     " Setting up the directories {
-        if has('persistent_undo')
-            set undofile                " So is persistent undo ...
-            set undolevels=1000         " Maximum number of changes that can be undone
-            set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
-        endif
+    if has('persistent_undo')
+        set undofile                " So is persistent undo ...
+        set undolevels=1000         " Maximum number of changes that can be undone
+        set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+    endif
     " }
 " }
 
-    " http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
-    " Restore cursor to file position in previous editing session
-    " To disable this, add the following to your .vimrc.before.local file:
-    "   let g:spf13_no_restore_cursor = 1
-    if !exists('g:spf13_no_restore_cursor')
-        function! ResCur()
-            if line("'\"") <= line("$")
-                silent! normal! g`"
-                return 1
-            endif
-        endfunction
+    function! ResCur()
+        if line("'\"") <= line("$")
+            silent! normal! g`"
+            return 1
+        endif
+    endfunction
 
-        augroup resCur
-            autocmd!
-            autocmd BufWinEnter * call ResCur()
-        augroup END
-    endif
+    augroup resCur
+        autocmd!
+        autocmd BufWinEnter * call ResCur()
+    augroup END
 
 " Vim UI {
-    if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-        let g:solarized_termcolors=256
-        let g:solarized_termtrans=1
-        let g:solarized_contrast="normal"
-        let g:solarized_visibility="normal"
-        color solarized             " Load a colorscheme
+    " if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+    "     let g:solarized_termcolors=256
+    "     let g:solarized_termtrans=1
+    "     let g:solarized_contrast="normal"
+    "     let g:solarized_visibility="normal"
+    "     color solarized             " Load a colorscheme
+    " endif
+    if filereadable(expand("~/.vim/bundle/gruvbox/colors/gruvbox.vim"))
+        color gruvbox
     endif
     " color desert
     if has('statusline')
@@ -235,21 +224,16 @@
         endif
     "}
     " vim-airline {
-        " Set configuration options for the statusline plugin vim-airline.
-        " Use the powerline theme and optionally enable powerline symbols.
-        " To use the symbols , , , , , , and .in the statusline
-        " segments add the following to your .vimrc.before.local file:
-        let g:airline_powerline_fonts=1
-        "我还省去了minibufexpl插件，因为我习惯在1个Tab下用多个buffer"
+        " let g:airline_powerline_fonts=1
         let g:airline#extensions#tabline#enabled = 1
         let g:airline#extensions#tabline#buffer_nr_show = 1
-        "设置切换Buffer快捷键"
-        nnoremap <leader>n :bn<CR>
-        nnoremap <leader>p :bp<CR>
+        nnoremap [b :bn<CR>
+        nnoremap ]b :bp<CR>
         " Default in terminal vim is 'dark'
         if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
             if !exists('g:airline_theme')
-                let g:airline_theme = 'powerlineish'
+                " let g:airline_theme = 'powerlineish'
+                let g:airline_theme = 'gruvbox'
             endif
         endif
     " }
@@ -263,11 +247,11 @@
         set lines=40                " 40 lines of text instead of 24
         if !exists("g:naso_no_big_font")
             if LINUX() && has("gui_running")
-                set guifont=PragmataPro\ 11,Ubuntu\ Mono\ derivative\ Powerline\ 12,Fantasque\ Sans\ Mono\ 12,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+                set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12,Fantasque\ Sans\ Mono\ 12,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
             elseif OSX() && has("gui_running")
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
             elseif WINDOWS() && has("gui_running")
-                set guifont=PragmataPro:h12,Ubuntu\ Mono\ derivative\ Powerline\ 12,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+                set guifont=Ubuntu\ Mono:h12,PragmataPro:h12,DejaVu\ Sans\ Mono\ for\ Powerline:h11,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
             endif
         endif
     else
