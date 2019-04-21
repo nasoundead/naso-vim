@@ -3,26 +3,26 @@
 set nocompatible        " Must be first line
 
 silent function! OSX()
-    return has('macunix')
+return has('macunix')
 endfunction
 silent function! LINUX()
-    return has('unix') && !has('macunix') && !has('win32unix')
+return has('unix') && !has('macunix') && !has('win32unix')
 endfunction
 silent function! WINDOWS()
-    return  (has('win32') || has('win64'))
+return  (has('win32') || has('win64'))
 endfunction
 
 if !WINDOWS()
     set shell=/bin/sh
 endif
 if WINDOWS()
-	set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME
-	if has("multi_byte")
-		set termencoding=utf-8
-		set encoding=utf-8
-		setglobal fileencoding=utf-8
-		set fileencodings=utf-8,gbk,gb18030,gk2312
-	endif
+    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME
+    if has("multi_byte")
+        set termencoding=utf-8
+        set encoding=utf-8
+        setglobal fileencoding=utf-8
+        set fileencodings=utf-8,gbk,gb18030,gk2312
+    endif
 endif
 
 
@@ -55,13 +55,18 @@ augroup resCur
     autocmd!
     autocmd BufWinEnter * call ResCur()
 augroup END
-	
+
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
 Plug 'morhetz/gruvbox'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
+Plug 'justinmk/vim-sneak'
+Plug 'Chiel92/vim-autoformat'
 Plug 'powerline/powerline'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -74,14 +79,14 @@ call plug#end()
 if has('gui_running')
     set guioptions-=T           " Remove the toolbar
     set lines=40                " 40 lines of text instead of 24
-    
+
     if LINUX() && has("gui_running")
         set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 14,Fantasque\ Sans\ Mono\ 12,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
     elseif OSX() && has("gui_running")
         set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
     elseif WINDOWS() && has("gui_running")
         set guifont=Fantasque\ Sans\ Mono\ 14,DejaVu\ Sans\ Mono\ for\ Powerline:h11
-	endif   
+    endif
 else
     if &term == 'xterm' || &term == 'screen'
         set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
@@ -89,7 +94,7 @@ else
     set term=builtin_ansi       " Make arrow and other keys work
 endif
 if has('statusline')
-	set rtp+=%HOME%/.vim/plugged/powerline/powerline/bindings/vim
+    set rtp+=%HOME%/.vim/plugged/powerline/powerline/bindings/vim
     set laststatus=2
 endif
 
@@ -115,7 +120,7 @@ set iskeyword-=#                    " '#' is an end of word designator
 set iskeyword-=-                    " '-' is an end of word designator
 set nobackup
 set noswapfile
-set tabpagemax=15 				" Only show 15 tabs
+set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
 set cursorline                  " Highlight current line
 set backspace=indent,eol,start  " Backspace for dummies
