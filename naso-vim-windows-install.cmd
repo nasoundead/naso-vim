@@ -30,20 +30,21 @@ IF NOT EXIST "%VIMAPP_PATH%" (
 
 call mklink "%HOME%\.vimrc" "%VIMAPP_PATH%\.vimrc"
 call mklink "%HOME%\_vimrc" "%VIMAPP_PATH%\.vimrc"
-call mklink "%HOME%\.vimrc.bundles" "%VIMAPP_PATH%\.vimrc.bundles"
 call mklink /J "%HOME%\.vim" "%VIMAPP_PATH%\.vim"
 
-IF NOT EXIST "%VIMAPP_PATH%\.vim\bundle" (
-    call mkdir "%VIMAPP_PATH%\.vim\bundle"
+IF NOT EXIST "%VIMAPP_PATH%\.vim\autoload" (
+    call mkdir "%VIMAPP_PATH%\.vim\autoload"
 )
 
-IF NOT EXIST "%HOME%/.vim/bundle/vundle" (
-    call git clone https://github.com/gmarik/vundle.git "%HOME%/.vim/bundle/vundle"
-) ELSE (
-  call cd "%HOME%/.vim/bundle/vundle"
+IF NOT EXIST "%VIMAPP_PATH%/vim-plug/" (
+	call cd "%VIMAPP_PATH%"
+    call git clone https://github.com/junegunn/vim-plug.git
+	call mklink "%HOME%\.vim\autoload\plug.vim" "%VIMAPP_PATH%\vim-plug\plug.vim"
+)ELSE (
+  call cd "%HOME%\.vim\vim-plug"
   call git pull
   call cd %HOME%
 )
 
-REM call vim -u "%VIMAPP_PATH%/.vimrc.bundles" +BundleInstall! +BundleClean +qall
+REM call vim PlugUpdate
 

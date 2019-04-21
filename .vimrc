@@ -1,265 +1,159 @@
 "   This is the personal .vimrc file of nasoundead, which is inspired by Steve Francia.
 "   Copyright 2016 Wanghaibo
+set nocompatible        " Must be first line
 
-" Environment {
-    " Identify platform {
-        silent function! OSX()
-            return has('macunix')
-        endfunction
-        silent function! LINUX()
-            return has('unix') && !has('macunix') && !has('win32unix')
-        endfunction
-        silent function! WINDOWS()
-            return  (has('win32') || has('win64'))
-        endfunction
-    " }
-    " Basics {
-        set nocompatible        " Must be first line
-        if !WINDOWS()
-            set shell=/bin/sh
-        endif
-    " }
-    " Windows Compatible {
-        " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-        " across (heterogeneous) systems easier.
-        if WINDOWS()
-          set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME
-        endif
-    " }
-    " Arrow Key Fix {
-        " https://github.com/naso/naso-vim/issues/780
-        if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
-            inoremap <silent> <C-[>OC <RIGHT>
-        endif
-    " }
-" }
-" Use bundles config {
-    if filereadable(expand("~/.vimrc.bundles"))
-        source ~/.vimrc.bundles
+silent function! OSX()
+    return has('macunix')
+endfunction
+silent function! LINUX()
+    return has('unix') && !has('macunix') && !has('win32unix')
+endfunction
+silent function! WINDOWS()
+    return  (has('win32') || has('win64'))
+endfunction
+
+if !WINDOWS()
+    set shell=/bin/sh
+endif
+if WINDOWS()
+	set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME
+	if has("multi_byte")
+		set termencoding=utf-8
+		set encoding=utf-8
+		setglobal fileencoding=utf-8
+		set fileencodings=utf-8,gbk,gb18030,gk2312
+	endif
+endif
+
+
+if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
+    inoremap <silent> <C-[>OC <RIGHT>
+endif
+
+
+if has('clipboard')
+    if has('unnamedplus')  " When possible use + register for copy-paste
+        set clipboard=unnamed,unnamedplus
+    else         " On mac and Windows, use * register for copy-paste
+        set clipboard=unnamed
     endif
-" }
-" General {
-    set background=dark         " Assume a dark background
-    filetype plugin indent on   " Automatically detect file types.
-    syntax on                   " Syntax highlighting
-    set mouse=a                 " Automatically enable mouse usage
-    set mousehide               " Hide the mouse cursor while typing
-    scriptencoding utf-8
-    set fileencodings=utf-8,gbk
-    set langmenu=zh_CN.utf-8
-    language messages zh_CN.utf-8
+endif
 
-    if has('clipboard')
-        if has('unnamedplus')  " When possible use + register for copy-paste
-            set clipboard=unnamed,unnamedplus
-        else         " On mac and Windows, use * register for copy-paste
-            set clipboard=unnamed
-        endif
+if has('persistent_undo')
+    set undofile                " So is persistent undo ...
+    set undolevels=1000         " Maximum number of changes that can be undone
+    set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+endif
+function! ResCur()
+    if line("'\"") <= line("$")
+        silent! normal! g`"
+        return 1
     endif
-    " Always switch to the current file directory
-    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-    "set autowrite                       " Automatically write a file when leaving a modified buffer
-    set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
-    set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
-    set virtualedit=onemore             " Allow for cursor beyond last character
-    set history=1000                    " Store a ton of history (default is 20)
-    set nospell                         " Spell checking off
-    set hidden                          " Allow buffer switching without saving
-    set iskeyword-=.                    " '.' is an end of word designator
-    set iskeyword-=#                    " '#' is an end of word designator
-    set iskeyword-=-                    " '-' is an end of word designator
-    set nobackup
-    set noswapfile
-    " Setting up the directories {
-    if has('persistent_undo')
-        set undofile                " So is persistent undo ...
-        set undolevels=1000         " Maximum number of changes that can be undone
-        set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+endfunction
+
+augroup resCur
+    autocmd!
+    autocmd BufWinEnter * call ResCur()
+augroup END
+	
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-easy-align'
+Plug 'morhetz/gruvbox'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-surround'
+Plug 'powerline/powerline'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+
+call plug#end()
+
+if has('gui_running')
+    set guioptions-=T           " Remove the toolbar
+    set lines=40                " 40 lines of text instead of 24
+    
+    if LINUX() && has("gui_running")
+        set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 14,Fantasque\ Sans\ Mono\ 12,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+    elseif OSX() && has("gui_running")
+        set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
+    elseif WINDOWS() && has("gui_running")
+        set guifont=Fantasque\ Sans\ Mono\ 14,DejaVu\ Sans\ Mono\ for\ Powerline:h11
+	endif   
+else
+    if &term == 'xterm' || &term == 'screen'
+        set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
     endif
-    " }
-" }
+    set term=builtin_ansi       " Make arrow and other keys work
+endif
+if has('statusline')
+	set rtp+=%HOME%/.vim/plugged/powerline/powerline/bindings/vim
+    set laststatus=2
+endif
 
-    function! ResCur()
-        if line("'\"") <= line("$")
-            silent! normal! g`"
-            return 1
-        endif
-    endfunction
+color gruvbox
+filetype plugin indent on   " Automatically detect file types.
+syntax on                   " Syntax highlighting
+set mouse=a                 " Automatically enable mouse usage
+set mousehide               " Hide the mouse cursor while typing
+scriptencoding utf-8
+set fileencodings=utf-8,gbk
+set langmenu=zh_CN.utf-8
+language messages zh_CN.utf-8
 
-    augroup resCur
-        autocmd!
-        autocmd BufWinEnter * call ResCur()
-    augroup END
+set autowrite                       " Automatically write a file when leaving a modified buffer
+set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
+set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
+set virtualedit=onemore             " Allow for cursor beyond last character
+set history=1000                    " Store a ton of history (default is 20)
+set nospell                         " Spell checking off
+set hidden                          " Allow buffer switching without saving
+set iskeyword-=.                    " '.' is an end of word designator
+set iskeyword-=#                    " '#' is an end of word designator
+set iskeyword-=-                    " '-' is an end of word designator
+set nobackup
+set noswapfile
+set tabpagemax=15 				" Only show 15 tabs
+set showmode                    " Display the current mode
+set cursorline                  " Highlight current line
+set backspace=indent,eol,start  " Backspace for dummies
+set linespace=0                 " No extra spaces between rows
+set number                      " Line numbers on
+set showmatch                   " Show matching brackets/parenthesis
+set incsearch                   " Find as you type search
+set hlsearch                    " Highlight search terms
+set winminheight=0              " Windows can be 0 line high
+set ignorecase                  " Case insensitive search
+set smartcase                   " Case sensitive when uc present
+set wildmenu                    " Show list instead of just completing
+set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
+set scrolljump=5                " Lines to scroll when cursor leaves screen
+set scrolloff=3                 " Minimum lines to keep above and below cursor
+set foldenable                  " Auto fold code
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+set nowrap                      " Do not wrap long lines
+set autoindent                  " Indent at the same level of the previous line
+set shiftwidth=4                " Use indents of 4 spaces
+set expandtab                   " Tabs are spaces, not tabs
+set tabstop=4                   " An indentation every four columns
+set softtabstop=4               " Let backspace delete indent
+set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+set splitright                  " Puts new vsplit windows to the right of the current
+set splitbelow                  " Puts new split windows to the bottom of the current
+set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> if !exists('g:naso_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
+autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
+autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+let mapleader = "\<Space>"
+nnoremap Y y$
+inoremap jk <esc>
 
-" Vim UI {
-    " if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-    "     let g:solarized_termcolors=256
-    "     let g:solarized_termtrans=1
-    "     let g:solarized_contrast="normal"
-    "     let g:solarized_visibility="normal"
-    "     color solarized             " Load a colorscheme
-    " endif
-    if filereadable(expand("~/.vim/bundle/gruvbox/colors/gruvbox.vim"))
-        color gruvbox
-    endif
-    " color desert
-    if has('statusline')
-        set laststatus=2
-        " Broken down into easily includeable segments
-        set statusline=%<%f\                     " Filename
-        set statusline+=%w%h%m%r                 " Options
-        set statusline+=\ [%{&ff}/%Y]            " Filetype
-        set statusline+=\ [%{getcwd()}]          " Current dir
-        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-    endif
-    set tabpagemax=15 " Only show 15 tabs
-    set showmode                    " Display the current mode
-    set cursorline                  " Highlight current line
-    set backspace=indent,eol,start  " Backspace for dummies
-    set linespace=0                 " No extra spaces between rows
-    set number                      " Line numbers on
-    set showmatch                   " Show matching brackets/parenthesis
-    set incsearch                   " Find as you type search
-    set hlsearch                    " Highlight search terms
-    set winminheight=0              " Windows can be 0 line high
-    set ignorecase                  " Case insensitive search
-    set smartcase                   " Case sensitive when uc present
-    set wildmenu                    " Show list instead of just completing
-    set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
-    set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
-    set scrolljump=5                " Lines to scroll when cursor leaves screen
-    set scrolloff=3                 " Minimum lines to keep above and below cursor
-    set foldenable                  " Auto fold code
-    set list
-    set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
-" }
-" Formatting {
-    set nowrap                      " Do not wrap long lines
-    set autoindent                  " Indent at the same level of the previous line
-    set shiftwidth=4                " Use indents of 4 spaces
-    set expandtab                   " Tabs are spaces, not tabs
-    set tabstop=4                   " An indentation every four columns
-    set softtabstop=4               " Let backspace delete indent
-    set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
-    set splitright                  " Puts new vsplit windows to the right of the current
-    set splitbelow                  " Puts new split windows to the bottom of the current
-    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
-    autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> if !exists('g:naso_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
-    autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-    autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
-" }
-" Key (re)Mappings {
-    let mapleader = "\<Space>"
-    " Yank from the cursor to the end of the line, to be consistent with C and D.
-    nnoremap Y y$
-    inoremap jk <esc>
-    inoremap <C-f> <esc>2li
-    inoremap <C-b> <esc>i
-    nnoremap <C-j> jzz
-    nnoremap <C-k> kzz
-" }
-" Plugins {
-    " NerdTree {
-        if isdirectory(expand("~/.vim/bundle/nerdtree"))
-            map <F2> :NERDTreeToggle<CR>
-            map <leader>e :NERDTreeFind<CR>
-            nmap <leader>nt :NERDTreeFind<CR>
-            let NERDTreeShowBookmarks=1
-            let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-            let NERDTreeChDirMode=0
-            let NERDTreeQuitOnOpen=1
-            let NERDTreeMouseMode=2
-            let NERDTreeShowHidden=1
-            let NERDTreeKeepTreeInNewTab=1
-            let g:nerdtree_tabs_open_on_gui_startup=0
-        endif
-    " }
-    " ctrlp {
-        if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
-            let g:ctrlp_working_path_mode = 'ra'
-            nnoremap <silent> <D-t> :CtrlP<CR>
-            nnoremap <silent> <D-r> :CtrlPMRU<CR>
-            let g:ctrlp_custom_ignore = {
-                \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-                \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
 
-            if executable('ag')
-                let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
-            elseif executable('ack-grep')
-                let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
-            elseif executable('ack')
-                let s:ctrlp_fallback = 'ack %s --nocolor -f'
-            " On Windows use "dir" as fallback command.
-            elseif WINDOWS()
-                let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
-            else
-                let s:ctrlp_fallback = 'find %s -type f'
-            endif
-            if exists("g:ctrlp_user_command")
-                unlet g:ctrlp_user_command
-            endif
-            let g:ctrlp_user_command = {
-                \ 'types': {
-                    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': s:ctrlp_fallback
-            \ }
-            if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
-                " CtrlP extensions
-                let g:ctrlp_extensions = ['funky']
-                "funky
-                nnoremap <Leader>fu :CtrlPFunky<Cr>
-            endif
-        endif
-    "}
-    " TagBar {
-        if isdirectory(expand("~/.vim/bundle/tagbar/"))
-            nnoremap <silent> <leader>tt :TagbarToggle<CR>
-        endif
-    "}
-    " Rainbow {
-        if isdirectory(expand("~/.vim/bundle/rainbow/"))
-            let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
-        endif
-    "}
-    " vim-airline {
-        " let g:airline_powerline_fonts=1
-        let g:airline#extensions#tabline#enabled = 1
-        let g:airline#extensions#tabline#buffer_nr_show = 1
-        nnoremap [b :bn<CR>
-        nnoremap ]b :bp<CR>
-        " Default in terminal vim is 'dark'
-        if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
-            if !exists('g:airline_theme')
-                " let g:airline_theme = 'powerlineish'
-                let g:airline_theme = 'gruvbox'
-            endif
-        endif
-    " }
 
-" }
-
-" GUI Settings {
-    " GVIM- (here instead of .gvimrc)
-    if has('gui_running')
-        set guioptions-=T           " Remove the toolbar
-        set lines=40                " 40 lines of text instead of 24
-        if !exists("g:naso_no_big_font")
-            if LINUX() && has("gui_running")
-                set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12,Fantasque\ Sans\ Mono\ 12,Andale\ Mono\ Regular\ 11,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
-            elseif OSX() && has("gui_running")
-                set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
-            elseif WINDOWS() && has("gui_running")
-                set guifont=Ubuntu\ Mono:h12,PragmataPro:h12,DejaVu\ Sans\ Mono\ for\ Powerline:h11,Monaco:h10,Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
-            endif
-        endif
-    else
-        if &term == 'xterm' || &term == 'screen'
-            set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-        endif
-        "set term=builtin_ansi       " Make arrow and other keys work
-    endif
-" }
 
 
