@@ -32,6 +32,12 @@ call mklink "%HOME%\.vimrc" "%VIMAPP_PATH%\.vimrc"
 call mklink "%HOME%\_vimrc" "%VIMAPP_PATH%\.vimrc"
 call mklink /J "%HOME%\.vim" "%VIMAPP_PATH%\.vim"
 
+
+set CONFIG_PATH=%HOME%\AppData\Local
+call mklink /J "%CONFIG_PATH%\nvim" "%VIMAPP_PATH%\.vim"
+call mklink "%CONFIG_PATH%\nvim\init.vim" "%VIMAPP_PATH%\.vimrc"
+call mklink "%CONFIG_PATH%\nvim\ginit.vim" "%VIMAPP_PATH%\ginit.vim"
+
 IF NOT EXIST "%VIMAPP_PATH%\.vim\autoload" (
     call mkdir "%VIMAPP_PATH%\.vim\autoload"
 )

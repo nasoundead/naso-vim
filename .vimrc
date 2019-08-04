@@ -18,12 +18,16 @@ endif
 if WINDOWS()
     set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME
     if has("multi_byte")
-        set termencoding=utf-8
-        set encoding=utf-8
-        setglobal fileencoding=utf-8
         set fileencodings=utf-8,gbk,gb18030,gk2312
+        set langmenu=zh_CN.utf-8
+        language messages zh_CN.utf-8
     endif
+else
+    set fileencodings=utf-8,gbk
 endif
+set termencoding=utf-8
+set encoding=utf-8
+scriptencoding utf-8
 
 
 if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
@@ -58,12 +62,14 @@ augroup END
 
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
-Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'justinmk/vim-sneak'
 Plug 'Chiel92/vim-autoformat'
-Plug 'powerline/powerline'
+" Plug 'powerline/powerline'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -71,9 +77,6 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-
 call plug#end()
 
 if has('gui_running')
@@ -91,22 +94,24 @@ else
     if &term == 'xterm' || &term == 'screen'
         set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
     endif
-    set term=builtin_ansi       " Make arrow and other keys work
-endif
-if has('statusline')
-    set rtp+=%HOME%/.vim/plugged/powerline/powerline/bindings/vim
-    set laststatus=2
+	" set term=builtin_ansi       " Make arrow and other keys work
 endif
 
-color gruvbox
+" if has('statusline')
+    " set rtp+=%HOME%/.vim/plugged/powerline/powerline/bindings/vim
+    " set laststatus=2
+" endif
+"Powerline setting
+let g:airline_theme='powerlineish'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'default'
+
+color onedark
 filetype plugin indent on   " Automatically detect file types.
 syntax on                   " Syntax highlighting
 set mouse=a                 " Automatically enable mouse usage
 set mousehide               " Hide the mouse cursor while typing
-scriptencoding utf-8
-set fileencodings=utf-8,gbk
-set langmenu=zh_CN.utf-8
-language messages zh_CN.utf-8
+
 
 set autowrite                       " Automatically write a file when leaving a modified buffer
 set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
