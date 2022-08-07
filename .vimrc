@@ -70,6 +70,7 @@ Plug 'powerline/powerline'
 " Plug 'vim-airline/vim-airline-themes'
 
 Plug 'junegunn/vim-easy-align'
+Plug 'terryma/vim-expand-region'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'justinmk/vim-sneak'
@@ -165,7 +166,10 @@ let mapleader = "\<Space>"
 nnoremap Y y$
 inoremap jk <esc>
 
-color atom-dark
+color spaceway
+
+map v <Plug>(expand_region_expand)
+map V <Plug>(expand_region_shrink)
 
 set pythonthreedll=/c/Python310/python3.dll
 
