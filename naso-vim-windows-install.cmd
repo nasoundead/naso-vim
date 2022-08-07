@@ -47,9 +47,10 @@ IF NOT EXIST "%VIMAPP_PATH%/vim-plug/" (
     call git clone https://github.com/junegunn/vim-plug.git
 	call mklink "%HOME%\.vim\autoload\plug.vim" "%VIMAPP_PATH%\vim-plug\plug.vim"
 )ELSE (
-  call cd "%HOME%\.vim\vim-plug"
+  call cd "%HOME%\.vim\autoload\vim-plug"
   call git pull
   call cd %HOME%
+  call mklink "%HOME%\.vim\autoload\plug.vim" "%VIMAPP_PATH%\vim-plug\plug.vim"
 )
 
 REM call vim PlugUpdate

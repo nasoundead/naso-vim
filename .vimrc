@@ -61,19 +61,25 @@ augroup resCur
 augroup END
 
 call plug#begin('~/.vim/plugged')
+
+Plug 'gavinok/spaceway.vim'
+Plug 'gosukiwi/vim-atom-dark'
+
+Plug 'powerline/powerline'
+" Plug 'bling/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+
 Plug 'junegunn/vim-easy-align'
-Plug 'joshdick/onedark.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'justinmk/vim-sneak'
 Plug 'Chiel92/vim-autoformat'
-" Plug 'powerline/powerline'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+
+
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
@@ -88,7 +94,7 @@ if has('gui_running')
     elseif OSX() && has("gui_running")
         set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
     elseif WINDOWS() && has("gui_running")
-        set guifont=Fantasque\ Sans\ Mono\ 14,DejaVu\ Sans\ Mono\ for\ Powerline:h11
+        set guifont=Source\ Code\ Pro\ for\ Powerline:h12,Ubuntu\ Mono\ derivative\ Powerline:h14,Inconsolata\ for\ Powerline:h12,DejaVu\ Sans\ Mono\ for\ Powerline:h11,
     endif
 else
     if &term == 'xterm' || &term == 'screen'
@@ -97,16 +103,12 @@ else
 	" set term=builtin_ansi       " Make arrow and other keys work
 endif
 
-" if has('statusline')
+if has('statusline')
     " set rtp+=%HOME%/.vim/plugged/powerline/powerline/bindings/vim
-    " set laststatus=2
-" endif
-"Powerline setting
-let g:airline_theme='powerlineish'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'default'
+    set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
+    set laststatus=2
+endif
 
-color onedark
 filetype plugin indent on   " Automatically detect file types.
 syntax on                   " Syntax highlighting
 set mouse=a                 " Automatically enable mouse usage
@@ -162,6 +164,10 @@ autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 let mapleader = "\<Space>"
 nnoremap Y y$
 inoremap jk <esc>
+
+color atom-dark
+
+set pythonthreedll=/c/Python310/python3.dll
 
 
 
